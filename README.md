@@ -1,6 +1,6 @@
-# EDU DEMO COGNITO 
+# DEMO COGNITO 
 
-EDU DEMO COGNITO is a front-end interface designed for cognito demo. This project is built using React, TypeScript, and Vite to ensure rapid development and a scalable architecture.
+DEMO COGNITO is a front-end interface designed for cognito demo. This project is built using React, TypeScript, and Vite to ensure rapid development and a scalable architecture.
 
 ## 🌟 Features
 
@@ -9,7 +9,7 @@ EDU DEMO COGNITO is a front-end interface designed for cognito demo. This projec
 
 ## 🛠️ Installation
 
-To get started with EDU DEMO COGNITO, follow these steps:
+To get started with DEMO COGNITO, follow these steps:
 
 1. Clone the repository
 
