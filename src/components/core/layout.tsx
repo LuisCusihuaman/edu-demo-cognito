@@ -4,6 +4,7 @@ import { useAuth } from 'react-oidc-context';
 import { Header } from './header';
 import { MainContent } from './main-content';
 import { Sidebar } from './sidebar';
+import { LoginPage } from '@/pages/login-page';
 
 type LayoutProps = {
   children: ReactNode;
@@ -16,9 +17,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     return <div>Loading authentication status...</div>;
   }
 
-  // if (!auth.isAuthenticated) {
-  //   return <LoginPage />;
-  // }
+  if (!auth.isAuthenticated) {
+    return <LoginPage />;
+  }
   return (
     <div key="1" className="flex min-h-screen w-full flex-col bg-muted/40">
       <Sidebar />
