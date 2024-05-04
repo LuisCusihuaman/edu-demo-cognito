@@ -15,10 +15,10 @@ export const useAwsTemporaryCredentials = () => {
     useState<CognitoIdentityCredentialProvider | null>(null);
 
   useEffect(() => {
-    if (isAuthenticated && user?.access_token) {
+    if (isAuthenticated && user?.id_token) {
       // Create a login map using the OIDC token
       const loginData = {
-        [COGNITO_ID]: user.access_token,
+        [COGNITO_ID]: user.id_token,
       };
 
       // Initialize credentials provider from the Cognito Identity Pool

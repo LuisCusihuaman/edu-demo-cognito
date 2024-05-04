@@ -11,7 +11,6 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (!credentials) return;
-
     // Directly create an S3Client instance here when credentials are available
     const s3Client = new S3Client({
       region: import.meta.env.VITE_AWS_REGION,
@@ -23,7 +22,6 @@ const DashboardPage = () => {
       .then(setImages)
       .catch((error) => console.error('Failed to load images:', error));
   }, [credentials]); // Depend only on credentials
-
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {images.map((image) => (
