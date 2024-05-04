@@ -1,9 +1,21 @@
-import { useAuth } from 'react-oidc-context';
+import React, { useEffect, useState } from 'react';
+import s3GetImages from '@/api/s3-get-images';
 import { Link } from 'react-router-dom';
 
-export const DashboardPage = () => {
-  const auth = useAuth();
-  console.log(auth);
+const DashboardPage = () => {
+  const [images, setImages] = useState(null);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      const result = await s3GetImages();
+      setImages(result);
+    };
+
+    fetchImages();
+  }, []);
+
+  console.log(images);
+
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       <div className="rounded-lg border p-4">
