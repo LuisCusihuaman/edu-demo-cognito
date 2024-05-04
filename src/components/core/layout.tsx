@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react';
 import { useAuth } from 'react-oidc-context';
 
+import { LoginPage } from '@/pages/login-page';
+
 import { Header } from './header';
 import { MainContent } from './main-content';
 import { Sidebar } from './sidebar';
-import { LoginPage } from '@/pages/login-page';
 
 type LayoutProps = {
   children: ReactNode;

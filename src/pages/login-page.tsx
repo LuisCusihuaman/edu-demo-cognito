@@ -16,7 +16,7 @@ export const LoginPage = () => {
         <div className="mx-auto flex w-full max-w-[350px] flex-col items-center justify-center space-y-6">
           <div className="flex flex-col items-center space-y-2 text-center">
             <h1 className="text-3xl font-semibold">
-              Welcome to EDU DEMO COGNITO
+              Welcome to {import.meta.env.VITE_OWNER_DEMO_NAME} DEMO COGNITO
             </h1>
             <p className="text-sm text-muted-foreground">
               Please log in to access the system.
@@ -43,11 +43,13 @@ export const LoginPage = () => {
           className="size-full object-cover backdrop-brightness-200 dark:brightness-[0.2] dark:grayscale"
         />
         <div className="absolute right-4 top-4 text-lg font-semibold text-white">
-          EDU DEMO COGNITO
+          {import.meta.env.VITE_OWNER_DEMO_NAME} DEMO COGNITO
         </div>
         <div className="absolute bottom-4 right-4 text-white">
           <blockquote>“Empowering your solutions”</blockquote>
-          <div className="font-bold">Edu Team</div>
+          <div className="font-bold">
+            {import.meta.env.VITE_OWNER_DEMO_NAME} Team
+          </div>
         </div>
       </div>
     </div>

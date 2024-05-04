@@ -1,35 +1,37 @@
-import {
-  // This command supersedes the ListObjectsCommand and is the recommended way to list objects.
-  ListObjectsV2Command,
-} from '@aws-sdk/client-s3';
+import type { ListObjectsCommandOutput, S3Client } from '@aws-sdk/client-s3';
+import { ListObjectsCommand } from '@aws-sdk/client-s3';
 
-import { updateS3ClientCredentials, s3Client } from '@/api/common/client';
+export type ImageInfo = {
+  key: string;
+  url: string;
+};
 
-export default async function s3GetImages() {
-  await updateS3ClientCredentials();
-  const command = new ListObjectsV2Command({
-    Bucket: 'ivan-demo-patchesprivatebucket-dnwfrfn345fv',
-    // The default and maximum number of keys returned is 1000. This limits it to
-    // one for demonstration purposes.
-    MaxKeys: 1,
-  });
-
+/**
+ * Fetches image URLs from an S3 bucket using an already region-configured S3Client.
+ * @param s3Client - An instance of S3Client configured with proper credentials and region.
+ * @param bucketName - The name of the bucket from which to fetch images.
+ * @returns A promise that resolves to an array of objects containing image keys and URLs.
+ */
+export async function fetchImagesFromS3(
+  s3Client: S3Client,
+  bucketName: string,
+): Promise<ImageInfo[]> {
   try {
-    let isTruncated = true;
+    const data: ListObjectsCommandOutput = await s3Client.send(
+      new ListObjectsCommand({ Bucket: bucketName }),
+    );
 
-    console.log('Your bucket contains the following objects:\n');
-    let contents = '';
-
-    while (isTruncated) {
-      const { Contents, IsTruncated, NextContinuationToken } =
-        await s3Client?.send(command);
-      const contentsList = Contents?.map((c: any) => ` • ${c.Key}`).join('\n');
-      contents += contentsList + '\n';
-      isTruncated = IsTruncated;
-      command.input.ContinuationToken = NextContinuationToken;
+    if (data.Contents && data.Contents.length > 0) {
+      return data.Contents.map((obj) => ({
+        key: obj.Key!,
+        url: `https://${bucketName}.s3.${s3Client.config.region}.amazonaws.com/${obj.Key}`,
+      }));
+    } else {
+      console.log('No contents found in the bucket.');
+      return [];
     }
-    return contents;
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error('Error fetching images from S3:', error);
+    return [];
   }
 }
