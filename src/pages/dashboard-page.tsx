@@ -1,37 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import s3GetImages from '@/api/s3-get-images';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+
+import { useS3Client } from '@/api/hooks/use-s3-client';
+import type { ImageInfo } from '@/api/s3-get-images';
+import { fetchImagesFromS3 } from '@/api/s3-get-images';
 
 const DashboardPage = () => {
-  const [images, setImages] = useState(null);
+  const s3Client = useS3Client();
+  const [images, setImages] = useState<ImageInfo[]>([]);
 
   useEffect(() => {
-    const fetchImages = async () => {
-      const result = await s3GetImages();
-      setImages(result);
-    };
+    if (!s3Client) return;
 
-    fetchImages();
-  }, []);
-
-  console.log(images);
+    fetchImagesFromS3(s3Client, import.meta.env.VITE_S3_BUCKET_NAME)
+      .then(setImages)
+      .catch((error) => console.error('Failed to load images:', error));
+  }, [s3Client]);
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <div className="rounded-lg border p-4">
-        <Link
-          to="/components"
-          className="text-lg font-semibold hover:text-blue-600"
-        >
-          Chats
-        </Link>
-        <p className="text-sm text-gray-500">Manage chats</p>
-        <div className="mt-2 text-xs text-gray-400">
-          <span>Total Chats: 1,234</span>
-          <span className="mx-2">|</span>
-          <span>Updated: 2 days ago</span>
+      {images.map((image) => (
+        <div key={image.key} className="rounded-lg border p-4">
+          <img src={image.url} alt="From S3" />
         </div>
-      </div>
+      ))}
     </div>
   );
 };
